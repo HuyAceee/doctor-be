@@ -7,7 +7,9 @@ export default function initWebRoutes(app) {
     router.get("/crud", homeController.getCRUD);
     router.post("/post-crud", homeController.postCRUD);
     router.get("/get-crud", homeController.displayGetCRUD);
-    router.post("/put-crud", homeController.putCRUD);
+    router.get("/put-crud", homeController.putCRUD);
+    router.post("/update-crud", homeController.updateCRUD);
+    router.get("/delete-crud", homeController.deleteCRUD);
 
     return app.use("/", router);
 }

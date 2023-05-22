@@ -23,6 +23,11 @@
     tr:nth-child(even) {
       background-color: #dddddd;
     }
+
+    a {
+      text-decoration: none;
+      color: #000000;
+    }
   </style>
   <body>
     <div class="container">
@@ -36,6 +41,7 @@
           <th>Gender</th>
           <th>Role Id</th>
           <th>Phone Number</th>
+          <th>Actions</th>
         </tr>
         <% for(let i=0; i < data.length; i++) { %>
         <tr>
@@ -47,6 +53,14 @@
           <td><%= data[i].gender %></td>
           <td><%= data[i].roleId %></td>
           <td><%= data[i].phoneNumber %></td>
+          <td>
+            <button type="button" class="btn btn-edit">
+              <a class="" href="/put-crud?id=<%=data[i].id%>">Sửa</a>
+            </button>
+            <button type="button" class="btn btn-danger">
+              <a class="" href="/delete-crud?id=<%=data[i].id%>">Xóa</a>
+            </button>
+          </td>
         </tr>
         <% } %>
       </table>
