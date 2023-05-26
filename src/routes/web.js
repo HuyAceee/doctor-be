@@ -12,6 +12,7 @@ export default function initWebRoutes(app) {
     router.post("/update-crud", homeController.updateCRUD);
     router.get("/delete-crud", homeController.deleteCRUD);
     router.post("/api/login", userController.handleLogin);
+    router.post("/api/users", userController.getUsers);
 
     return app.use("/", router);
 }

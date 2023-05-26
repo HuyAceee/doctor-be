@@ -1,7 +1,8 @@
 import db from "../models";
 import bcrypt from "bcryptjs";
+import { configGetNotPassword } from "../utils/constants";
 
-const loginServices = async (data) => {
+export const loginServices = async (data) => {
   const { email, password } = data;
   try {
     if (!email || !password) {
@@ -21,7 +22,6 @@ const loginServices = async (data) => {
       };
     }
     const checkPassword = await bcrypt.compare(password, user.password);
-    console.log(checkPassword);
     if (!checkPassword) {
       return {
         statusCode: 401,
@@ -38,11 +38,30 @@ const loginServices = async (data) => {
   } catch (err) {
     return {
       statusCode: 500,
-      message: "Servr error",
+      message: "Server error",
     };
   }
 };
 
-module.exports = {
-  loginServices,
+export const getUsersServices = async (id) => {
+  try {
+    let users;
+    console.log(id);
+    if (!id) {
+      users = await db.User.findAll(configGetNotPassword);
+      console.log(users);
+    } else {
+      users = await db.User.findOne({ where: { id }, ...configGetNotPassword });
+    }
+    return {
+      statusCode: 200,
+      message: "OK",
+      users,
+    };
+  } catch (err) {
+    return {
+      statusCode: 500,
+      message: "Server error",
+    };
+  }
 };
