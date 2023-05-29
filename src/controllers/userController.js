@@ -1,4 +1,4 @@
-import { loginServices, getUsersServices } from "../services/userServices";
+import { loginServices, getUsersServices, createUserServices, editUserServices, deleteUserServices } from "../services/userServices";
 
 const handleLogin = async (req, res) => {
   try {
@@ -20,7 +20,40 @@ const getUsers = async (req, res) => {
   }
 };
 
+const createUser = async (req, res) => {
+  try {
+    const body = req.body;
+    const data = await createUserServices(body);
+    return res.status(data.statusCode).json(data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const editUser = async (req, res) => {
+  try {
+    const body = req.body;
+    const data = await editUserServices(body);
+    return res.status(data.statusCode).json(data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const data = await deleteUserServices(id);
+    return res.status(data.statusCode).json(data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   handleLogin,
   getUsers,
+  createUser,
+  editUser,
+  deleteUser,
 };

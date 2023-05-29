@@ -1,5 +1,5 @@
-import bcryptjs from "bcryptjs";
 import db from "../models";
+import { hashPassword } from '../utils/functions';
 
 const createNewUser = (data) => {
   return new Promise(async (resolve, reject) => {
@@ -11,18 +11,6 @@ const createNewUser = (data) => {
         gender: !!Number(data.gender),
       });
       resolve("create new user successfully!");
-    } catch (err) {
-      reject(err);
-    }
-  });
-};
-
-const hashPassword = (password) => {
-  return new Promise((resolve, reject) => {
-    try {
-      const salt = bcryptjs.genSaltSync(10);
-      const hash = bcryptjs.hashSync(password, salt);
-      resolve(hash);
     } catch (err) {
       reject(err);
     }
