@@ -1,7 +1,7 @@
 import db from "../models";
 import bcrypt from "bcryptjs";
-import { configGetNotPassword } from "../utils/constants";
-import { hashPassword } from '../utils/functions';
+import { configGetNotPassword, serverError } from "../utils/constants";
+import { hashPassword } from "../utils/functions";
 
 export const loginServices = async (data) => {
   const { email, password } = data;
@@ -36,10 +36,7 @@ export const loginServices = async (data) => {
       message: "OK",
     };
   } catch (err) {
-    return {
-      statusCode: 500,
-      message: "Server error",
-    };
+    return serverError;
   }
 };
 
@@ -57,73 +54,59 @@ export const getUsersServices = async (id) => {
       users,
     };
   } catch (err) {
-    return {
-      statusCode: 500,
-      message: "Server error",
-    };
+    return serverError;
   }
 };
 
 export const createUserServices = async (body) => {
   try {
     const user = await db.User.findOne({
-      where: { email: body.email }
-    })
+      where: { email: body.email },
+    });
     if (user) {
       return {
         statusCode: 400,
         message: "User already exists!",
-      }
+      };
     }
     const hashPasswordUser = await hashPassword(body.password);
     await db.User.create({
       ...body,
       password: hashPasswordUser,
-      gender: !!Number(body.gender),
     });
     return {
       statusCode: 200,
       message: "OK",
-    }
-  } catch (err) {
-    return {
-      statusCode: 500,
-      message: "Server error",
     };
+  } catch (err) {
+    return serverError;
   }
 };
 
 export const editUserServices = async (body) => {
   try {
-
     const user = await db.User.findOne({
       where: { id: body.id },
       raw: false,
-    })
-    console.log(user)
+    });
     if (!user) {
       return {
         statusCode: 404,
         message: "User does not exist!",
-      }
+      };
     }
-    Object.keys(body).filter((i) => i !== "id").forEach((i) => {
-      if (i === "gender") {
-        user.gender = !!Number(body.gender);
-      } else {
-        user[i] = body[i]
-      }
-    })
+    Object.keys(body)
+      .filter((i) => i !== "id")
+      .forEach((i) => {
+        user[i] = body[i];
+      });
     await user.save();
     return {
       statusCode: 200,
       message: "OK",
-    }
-  } catch (err) {
-    return {
-      statusCode: 500,
-      message: "Server error",
     };
+  } catch (err) {
+    return serverError;
   }
 };
 
@@ -131,8 +114,8 @@ export const deleteUserServices = async (id) => {
   try {
     const user = await db.User.findOne({
       where: { id },
-      raw: false
-    })
+      raw: false,
+    });
     if (!user) {
       return {
         statusCode: 404,
@@ -145,9 +128,6 @@ export const deleteUserServices = async (id) => {
       message: "OK",
     };
   } catch (err) {
-    return {
-      statusCode: 500,
-      message: "Server error",
-    };
+    return serverError;
   }
-}
+};

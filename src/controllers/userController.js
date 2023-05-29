@@ -1,6 +1,12 @@
-import { loginServices, getUsersServices, createUserServices, editUserServices, deleteUserServices } from "../services/userServices";
+import {
+  loginServices,
+  getUsersServices,
+  createUserServices,
+  editUserServices,
+  deleteUserServices,
+} from "../services/userServices";
 
-const handleLogin = async (req, res) => {
+export const handleLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
     const data = await loginServices({ email, password });
@@ -10,7 +16,7 @@ const handleLogin = async (req, res) => {
   }
 };
 
-const getUsers = async (req, res) => {
+export const getUsers = async (req, res) => {
   try {
     const { id } = req.body;
     const data = await getUsersServices(id);
@@ -20,7 +26,7 @@ const getUsers = async (req, res) => {
   }
 };
 
-const createUser = async (req, res) => {
+export const createUser = async (req, res) => {
   try {
     const body = req.body;
     const data = await createUserServices(body);
@@ -30,7 +36,7 @@ const createUser = async (req, res) => {
   }
 };
 
-const editUser = async (req, res) => {
+export const editUser = async (req, res) => {
   try {
     const body = req.body;
     const data = await editUserServices(body);
@@ -40,7 +46,7 @@ const editUser = async (req, res) => {
   }
 };
 
-const deleteUser = async (req, res) => {
+export const deleteUser = async (req, res) => {
   try {
     const { id } = req.body;
     const data = await deleteUserServices(id);
@@ -48,12 +54,4 @@ const deleteUser = async (req, res) => {
   } catch (err) {
     console.log(err);
   }
-};
-
-module.exports = {
-  handleLogin,
-  getUsers,
-  createUser,
-  editUser,
-  deleteUser,
 };

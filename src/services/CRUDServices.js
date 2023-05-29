@@ -1,5 +1,5 @@
 import db from "../models";
-import { hashPassword } from '../utils/functions';
+import { hashPassword } from "../utils/functions";
 
 const createNewUser = (data) => {
   return new Promise(async (resolve, reject) => {
@@ -8,7 +8,6 @@ const createNewUser = (data) => {
       await db.User.create({
         ...data,
         password: hashPasswordUser,
-        gender: !!Number(data.gender),
       });
       resolve("create new user successfully!");
     } catch (err) {

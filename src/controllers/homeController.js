@@ -7,7 +7,7 @@ import {
   deleteUserById,
 } from "../services/CRUDServices";
 
-const getHomePage = async (req, res) => {
+export const getHomePage = async (req, res) => {
   try {
     const data = await db.User.findAll();
     return res.render("homePage", { data: JSON.stringify(data) });
@@ -16,7 +16,7 @@ const getHomePage = async (req, res) => {
   }
 };
 
-const getCRUD = async (req, res) => {
+export const getCRUD = async (req, res) => {
   try {
     const data = await db.User.findAll();
     return res.render("crud", { data: JSON.stringify(data) });
@@ -25,7 +25,7 @@ const getCRUD = async (req, res) => {
   }
 };
 
-const postCRUD = async (req, res) => {
+export const postCRUD = async (req, res) => {
   try {
     const response = await createNewUser(req.body);
     return res.render("post-crud", { data: JSON.stringify(req.body) });
@@ -34,7 +34,7 @@ const postCRUD = async (req, res) => {
   }
 };
 
-const displayGetCRUD = async (req, res) => {
+export const displayGetCRUD = async (req, res) => {
   try {
     const response = await getUsers();
     return res.render("get-crud", { data: response });
@@ -43,7 +43,7 @@ const displayGetCRUD = async (req, res) => {
   }
 };
 
-const putCRUD = async (req, res) => {
+export const putCRUD = async (req, res) => {
   try {
     const userId = req.query.id;
     const response = await getUserById(userId);
@@ -53,7 +53,7 @@ const putCRUD = async (req, res) => {
   }
 };
 
-const updateCRUD = async (req, res) => {
+export const updateCRUD = async (req, res) => {
   try {
     const response = await updateUserById(req.body);
     return res.render("update-crud", { data: response });
@@ -62,7 +62,7 @@ const updateCRUD = async (req, res) => {
   }
 };
 
-const deleteCRUD = async (req, res) => {
+export const deleteCRUD = async (req, res) => {
   try {
     const userId = req.query.id;
     const response = await deleteUserById(userId);
@@ -70,14 +70,4 @@ const deleteCRUD = async (req, res) => {
   } catch (err) {
     console.log(err);
   }
-};
-
-module.exports = {
-  getHomePage,
-  getCRUD,
-  postCRUD,
-  displayGetCRUD,
-  putCRUD,
-  updateCRUD,
-  deleteCRUD,
 };
