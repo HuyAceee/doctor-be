@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
         as: "positionData",
       });
       AllCode.hasMany(models.User, { foreignKey: "gender", as: "genderData" });
-      AllCode.hasMany(models.User, { foreignKey: "roldId", as: "roleData" });
+      AllCode.hasMany(models.User, { foreignKey: "roleId", as: "roleData" });
     }
   }
   AllCode.init(
