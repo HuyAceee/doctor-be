@@ -19,6 +19,7 @@ import {
 import { getAllCode } from "../controllers/allCodeController";
 import { getTopDoctorHome } from "../controllers/doctorController";
 import { getInformation } from "../controllers/informationController";
+import { handleMarkdown } from "../controllers/markdownController";
 
 export default function initWebRoutes(app) {
   router.get("/", getHomePage);
@@ -38,7 +39,8 @@ export default function initWebRoutes(app) {
 
   router.get("/api/top-doctor-home", getTopDoctorHome);
   router.get("/api/doctors", getTopDoctorHome);
-  router.post("/api/get-infomation", getInformation);
+  router.post("/api/get-information", getInformation);
+  router.post("/api/markdown", handleMarkdown);
 
   return app.use("/", router);
 }

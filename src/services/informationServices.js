@@ -9,8 +9,10 @@ export const getInformationServices = async (id) => {
         message: "User not found!",
       };
     }
-    console.log(id);
-    const info = await db.DoctorInfo.findAll();
+    console.log(db.DoctorInfo, db.User);
+    const info = await db.User.findAll({
+      raw: true,
+    });
     if (info) {
       return {
         statusCode: 200,

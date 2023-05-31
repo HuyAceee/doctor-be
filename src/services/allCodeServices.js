@@ -3,6 +3,7 @@ import { serverError } from "../utils/constants";
 
 export const getAllCodeServices = async (type) => {
   try {
+    console.log(db.AllCode);
     const allCode = await db.AllCode.findAll({
       where: { ...(type ? { type } : {}) },
       raw: true,
