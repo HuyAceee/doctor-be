@@ -1,15 +1,11 @@
 import db from "../models";
-import { serverError } from "../utils/constants";
+import { notFoundError, serverError } from "../utils/constants";
 
 export const getInformationServices = async (id) => {
   try {
     if (!id) {
-      return {
-        statusCode: 404,
-        message: "User not found!",
-      };
+      return notFoundError;
     }
-    console.log(db.DoctorInfo, db.User);
     const info = await db.User.findAll({
       raw: true,
     });

@@ -11,3 +11,19 @@ export const hashPassword = (password) => {
     }
   });
 };
+
+export const markdownFields = ["doctorId", "clinicId", "specialtyId", "id"];
+
+export const getFieldQuery = (data) => {
+  let query = {};
+  Object.keys(data).forEach((field) => {
+    if (markdownFields.includes(field)) {
+      query = {
+        ...query,
+        [field]: data[field],
+      };
+    }
+  });
+  if (Object.keys(query).length) return query;
+  return null;
+};

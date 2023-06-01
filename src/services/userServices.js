@@ -1,6 +1,10 @@
 import db from "../models";
 import bcrypt from "bcryptjs";
-import { configGetNotPassword, serverError } from "../utils/constants";
+import {
+  configGetNotPassword,
+  notFoundError,
+  serverError,
+} from "../utils/constants";
 import { hashPassword } from "../utils/functions";
 
 export const loginServices = async (data) => {
@@ -17,10 +21,7 @@ export const loginServices = async (data) => {
       raw: true,
     });
     if (!user) {
-      return {
-        statusCode: 404,
-        message: "User not found",
-      };
+      return notFoundError;
     }
     const checkPassword = await bcrypt.compare(password, user.password);
     if (!checkPassword) {
@@ -43,10 +44,23 @@ export const loginServices = async (data) => {
 export const getUsersServices = async (id) => {
   try {
     let users;
+    console.log(db);
     if (!id) {
       users = await db.User.findAll(configGetNotPassword);
     } else {
-      users = await db.User.findOne({ where: { id }, ...configGetNotPassword });
+      users = await db.User.findOne({
+        where: { id },
+        raw: true,
+        nest: true,
+        include: [
+          {
+            model: db.Markdown,
+            as: "markdownData",
+            attributes: ["id", "description", "contentHTML", "contentMarkdown"],
+          },
+        ],
+        ...configGetNotPassword,
+      });
     }
     return {
       statusCode: 200,
@@ -117,10 +131,7 @@ export const deleteUserServices = async (id) => {
       raw: false,
     });
     if (!user) {
-      return {
-        statusCode: 404,
-        message: "User not found!",
-      };
+      return notFoundError;
     }
     await user.destroy();
     return {
