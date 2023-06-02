@@ -34,16 +34,10 @@ export const handleMarkdownServices = async (data) => {
 export const getMarkdownServices = async (data) => {
   try {
     const query = getFieldQuery(data);
-    if (!query) {
-      return notFoundError;
-    }
     const markdown = await db.Markdown.findOne({
       where: query,
       raw: false,
     });
-    if (!markdown) {
-      return notFoundError;
-    }
     return {
       statusCode: 200,
       message: "OK",

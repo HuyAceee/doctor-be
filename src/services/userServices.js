@@ -5,7 +5,7 @@ import {
   notFoundError,
   serverError,
 } from "../utils/constants";
-import { hashPassword } from "../utils/functions";
+import { convertImageFromBuffer, hashPassword } from "../utils/functions";
 
 export const loginServices = async (data) => {
   const { email, password } = data;
@@ -47,6 +47,15 @@ export const getUsersServices = async (id) => {
     console.log(db);
     if (!id) {
       users = await db.User.findAll(configGetNotPassword);
+      users = users.map((user) => {
+        if (user && user.image) {
+          return {
+            ...user,
+            image: convertImageFromBuffer(user.image),
+          };
+        }
+        return user;
+      });
     } else {
       users = await db.User.findOne({
         where: { id },
@@ -61,6 +70,9 @@ export const getUsersServices = async (id) => {
         ],
         ...configGetNotPassword,
       });
+      if (users && users.image) {
+        users.image = convertImageFromBuffer(users.image);
+      }
     }
     return {
       statusCode: 200,

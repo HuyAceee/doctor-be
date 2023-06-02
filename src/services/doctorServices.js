@@ -1,9 +1,10 @@
 import db from "../models";
 import { configGetNotPassword, serverError } from "../utils/constants";
+import { convertImageFromBuffer } from "../utils/functions";
 
 export const getTopDoctorHomeServices = async (limit) => {
   try {
-    const doctors = await db.User.findAll({
+    let doctors = await db.User.findAll({
       where: { roleId: "R2" },
       limit,
       raw: true,
@@ -27,6 +28,16 @@ export const getTopDoctorHomeServices = async (limit) => {
         },
       ],
       ...configGetNotPassword,
+    });
+
+    doctors = doctors.map((doctor) => {
+      if (doctor && doctor.image) {
+        return {
+          ...doctor,
+          image: convertImageFromBuffer(doctor.image),
+        };
+      }
+      return doctor;
     });
     if (doctors) {
       return {

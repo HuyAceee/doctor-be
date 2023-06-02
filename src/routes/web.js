@@ -24,6 +24,10 @@ import {
   getMarkdown,
   handleMarkdown,
 } from "../controllers/markdownController";
+import {
+  createSchedule,
+  getScheduleDoctorInDate,
+} from "../controllers/scheduleController";
 
 export default function initWebRoutes(app) {
   router.get("/", getHomePage);
@@ -47,6 +51,9 @@ export default function initWebRoutes(app) {
   router.post("/api/markdown", handleMarkdown);
   router.get("/api/markdown", getMarkdown);
   router.delete("/api/markdown", deleteMarkdown);
+
+  router.post("/api/schedule-doctor-in-date", getScheduleDoctorInDate);
+  router.post("/api/create-schedule", createSchedule);
 
   return app.use("/", router);
 }

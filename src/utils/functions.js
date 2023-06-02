@@ -27,3 +27,9 @@ export const getFieldQuery = (data) => {
   if (Object.keys(query).length) return query;
   return null;
 };
+
+export const convertImageFromBuffer = (data) => {
+  if (!data) return "";
+  const res = new Buffer(data, "base64").toString("binary");
+  return res;
+};
