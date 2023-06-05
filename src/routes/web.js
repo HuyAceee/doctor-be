@@ -28,6 +28,7 @@ import {
   createSchedule,
   getScheduleDoctorInDate,
 } from "../controllers/scheduleController";
+import { createBooking } from "../controllers/bookingController";
 
 export default function initWebRoutes(app) {
   router.get("/", getHomePage);
@@ -54,6 +55,8 @@ export default function initWebRoutes(app) {
 
   router.post("/api/schedule-doctor-in-date", getScheduleDoctorInDate);
   router.post("/api/create-schedule", createSchedule);
+
+  router.post("/api/create-booking", createBooking);
 
   return app.use("/", router);
 }

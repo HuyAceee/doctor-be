@@ -44,7 +44,6 @@ export const loginServices = async (data) => {
 export const getUsersServices = async (id) => {
   try {
     let users;
-    console.log(db);
     if (!id) {
       users = await db.User.findAll(configGetNotPassword);
       users = users.map((user) => {

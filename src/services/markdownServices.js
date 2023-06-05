@@ -15,7 +15,6 @@ export const handleMarkdownServices = async (data) => {
       where: { id: data?.id },
       raw: false,
     });
-    console.log(markdown, data);
     Object.keys(data)
       .filter((i) => i !== "id")
       .forEach((i) => {
