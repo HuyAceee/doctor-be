@@ -5,14 +5,13 @@ import { sendMailer } from "../utils/functions";
 
 export const createBookingServices = async (data) => {
   try {
-    console.log(data)
     const user = await db.User.findOrCreate({
       where: { email: data.email },
       defaults: {
         email: data.email,
         roleId: "R3",
       },
-      raw: true
+      raw: true,
     });
     const { email, ...rest } = data;
     if (!user) return serverError;
@@ -22,7 +21,7 @@ export const createBookingServices = async (data) => {
         ...rest,
         patientId: user[0].id,
         token: uuidv4(),
-        statusId: 'S1'
+        statusId: "S1",
       },
       raw: true,
       nest: true,
@@ -39,16 +38,39 @@ export const createBookingServices = async (data) => {
         },
       ],
     });
-    console.log(booking)
     if (booking) {
-      await sendMailer(data, booking[0].doctorId, booking[0].doctorData.firstName + booking[0].doctorData.lastName, booking[0].timeTypeData.valueEn, booking[0].token);
+      await sendMailer(
+        data,
+        booking[0].doctorId,
+        booking[0].doctorData.firstName + booking[0].doctorData.lastName,
+        booking[0].timeTypeData.valueEn,
+        booking[0].token
+      );
     }
     return {
       statusCode: 200,
       message: "OK",
-      booking: booking[0]
+      booking: booking[0],
     };
+  } catch (err) {
+    return serverError;
+  }
+};
 
+export const updateBookingServices = async (data) => {
+  try {
+    const { statusId, ...rest } = data;
+    const booking = await db.Booking.findOne({
+      where: rest,
+      raw: false,
+    });
+    if (!booking) return serverError;
+    booking.statusId = data.statusId;
+    await booking.save();
+    return {
+      statusCode: 200,
+      message: "OK",
+    };
   } catch (err) {
     return serverError;
   }
